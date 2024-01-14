@@ -9,7 +9,7 @@ class FileStorage:
     Deserialization/Serialization of python Dictionary
     """
 
-    __file_path = "file_path"
+    __file_path = "file.json"
     __objects = {}
 
     @property
@@ -47,7 +47,7 @@ class FileStorage:
         :return:
         """
 
-        with open("json.file", mode="r+", encoding="utf-8") as f:
+        with open(self.__file_path, mode="w", encoding="utf-8") as f:
             dump(self.__objects, f)
 
     def reload(self):
@@ -57,7 +57,8 @@ class FileStorage:
         """
 
         if self.__file_path:
-            with open("json.file", mode="r+", encoding="utf-8") as f:
-                loaded_obj = load(f)
+            with open(self.__file_path, mode="r+", encoding="utf-8") as f:
+                self.__objects = load(f)
+                # loaded_obj = load(f)
 
-        return loaded_obj
+        # return loaded_obj
