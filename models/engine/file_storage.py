@@ -56,9 +56,8 @@ class FileStorage:
         :return:
         """
 
-        if self.__file_path:
-            with open(self.__file_path, mode="r+", encoding="utf-8") as f:
+        try:
+            with open(self.__file_path, mode="r", encoding="utf-8") as f:
                 self.__objects = load(f)
-                # loaded_obj = load(f)
-
-        # return loaded_obj
+        except FileNotFoundError:
+            pass  # Ignore if the file doesn't exist

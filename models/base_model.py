@@ -2,7 +2,7 @@
 """ Base Class model setup """
 from uuid import uuid4
 from datetime import datetime
-from engine import storage
+from models.engine import storage
 
 
 class BaseModel:
@@ -17,7 +17,7 @@ class BaseModel:
         self.id = str(uuid4())
         self.updated_at = datetime.now()
         self.created_at = datetime.now()
-        storage.new()
+        storage.new(self)
 
         if kwargs is not None:
             for key, value in self.__dict__.items():
