@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """ Base Class model setup """
+from models import storage
+# from models.engine import file_storage
 from uuid import uuid4
 from datetime import datetime
-from models.engine import storage
 
 
 class BaseModel:
@@ -17,7 +18,8 @@ class BaseModel:
         self.id = str(uuid4())
         self.updated_at = datetime.now()
         self.created_at = datetime.now()
-        storage.new(self)
+        if not kwargs:  # New instance
+            storage.new(self)
 
         if kwargs is not None:
             for key, value in self.__dict__.items():

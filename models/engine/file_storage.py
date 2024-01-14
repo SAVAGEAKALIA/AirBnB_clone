@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """ New file for File Storage """
-from json import load, dump
+import json
+import os
 
 
-class FileStorage:
+class FileStorage():
     """
     Class for created for file storage
     Deserialization/Serialization of python Dictionary
@@ -11,20 +12,6 @@ class FileStorage:
 
     __file_path = "file.json"
     __objects = {}
-
-    @property
-    def file_path(self):
-        """ string - path to the JSON file (ex: file.json) getter"""
-        return self.__file_path
-
-    @file_path.setter
-    def file_path(self, value):
-        """string - path to the JSON file (ex: file.json)"""
-
-        # with open("file.json", mode="r+", encoding="utf-6") as f:
-        # f = dumps(value)
-
-        self.__file_path = value
 
     def all(self):
         """
@@ -47,8 +34,8 @@ class FileStorage:
         :return:
         """
 
-        with open(self.__file_path, mode="w", encoding="utf-8") as f:
-            dump(self.__objects, f)
+        with open(self.__file_path, "w", encoding="utf-8") as f:
+            json.dump(self.__objects, f)
 
     def reload(self):
         """
@@ -56,8 +43,9 @@ class FileStorage:
         :return:
         """
 
-        try:
-            with open(self.__file_path, mode="r", encoding="utf-8") as f:
-                self.__objects = load(f)
-        except FileNotFoundError:
+
+        if os.path.isfile(self.__file_path):
+            with open(self.__file_path, "r", encoding="utf-8") as f:
+                self.__objects = json.load(f)
+        else:
             pass  # Ignore if the file doesn't exist
