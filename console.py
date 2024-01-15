@@ -4,7 +4,6 @@ import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-
     """AirBnb Command line interpreter"""
     prompt = '(hbnb) '
 
@@ -21,7 +20,14 @@ class HBNBCommand(cmd.Cmd):
         """Exits console"""
         return True
 
+    def emptyline(self):
+        """Do nothing on empty input line."""
+        pass
+
+    def emptyline(self):
+        """Do nothing on empty input line."""
+        pass
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-    exit(1)
