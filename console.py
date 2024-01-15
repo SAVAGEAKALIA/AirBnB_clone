@@ -8,6 +8,13 @@ class HBNBCommand(cmd.Cmd):
     """AirBnb Command line interpreter"""
     prompt = '(hbnb) '
 
+    def default(self, line):
+        """Handles empty lines and prints "1"."""
+        if not line.strip():
+            print("1")
+        else:
+            print("Invalid command:", line)
+
     def do_EOF(self, line):
         """ Signals end of File """
         return True
