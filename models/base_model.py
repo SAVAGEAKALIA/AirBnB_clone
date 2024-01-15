@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """ Base Class model setup """
-from models import storage
-# from models.engine import file_storage
 from uuid import uuid4
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
@@ -15,27 +14,19 @@ class BaseModel:
         :param args: Unique id for each instance
         :param kwargs: Time it was created
         """
-        self.id = str(uuid4())
-        self.updated_at = datetime.now()
-        self.created_at = datetime.now()
-        if not kwargs:  # New instance
-            storage.new(self)
-
         if kwargs is not None:
-            for key, value in self.__dict__.items():
-                if not key.startswith("__class__"):
-                    if key.startswith("created_at"):
-                        # Convert strings to datetime objects
-                        setattr(self, key, datetime.fromisoformat(str(value)))
-                    elif key.startswith("updated_at"):
-                        # Convert strings to datetime objects
-                        setattr(self, key, datetime.fromisoformat(str(value)))
-                    else:
-                        setattr(self, key, value)
-        else:
+            for key, value in kwargs.items():
+                if key == "__class__":
+                    continue
+                elif key in ["created_at", "updated_at"]:
+                    setattr(self, key, datetime.fromisoformat(str(value)))
+                setattr(self, key, value)
+
+        if not kwargs:
             self.id = str(uuid4())
             self.created_at = datetime.now()
-            self.updated_at = self.created_at
+            self.updated_at = datetime.now()
+            storage.new(self)
 
     def save(self):
         """
@@ -52,31 +43,15 @@ class BaseModel:
         a dictionary containing all keys/values of __dict__ of the instance
         """
         # Use a new dictionary to store item
-        instance_dict = self.__dict__.copy()
-        instance_dict['__class__'] = self.__class__.__name__
-
-        # Ensure a specific order of keys
-        ordered_keys = ['my_number', 'name', '__class__', 'updated_at', 'id', 'created_at']
-
-        # Create a new dictionary with the desired key order
-        # ordered_dict = {key: instance_dict[key] for key in ordered_keys if key in instance_dict}
-        ordered_dict = {}
-        for key in ordered_keys:
-            if key in instance_dict:
-                ordered_dict[key] = instance_dict[key]
-
-        # Convert 'created_at' and 'updated_at' to ISO format
-        ordered_dict['created_at'] = self.created_at.isoformat()
-        ordered_dict['updated_at'] = self.updated_at.isoformat()
-
-        return ordered_dict
-        # instance_dict['created_at'] = self.created_at.isoformat()
-        # instance_dict['updated_at'] = self.updated_at.isoformat()
-        # return  instance_dict
+        new_dict = self.__dict__.copy()
+        new_dict["__class__"] = self.__class__.__name__
+        new_dict["created_at"] = self.created_at.isoformat()
+        new_dict["updated_at"] = self.updated_at.isoformat()
+        return new_dict
 
     def __str__(self):
         """
         str implementation for Class
         :return: [<class name>] (<self.id>) <self.__dict__>
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, str(self.__dict__))
