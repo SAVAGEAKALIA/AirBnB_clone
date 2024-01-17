@@ -3,7 +3,14 @@
 import cmd
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
+valid_classes = ["BaseModel", "State", "City", "Amenity", "Place", "Review", "User"]
 
 class HBNBCommand(cmd.Cmd):
     """AirBnb Command line interpreter"""
@@ -39,12 +46,12 @@ class HBNBCommand(cmd.Cmd):
             else:
                 class_name = args_list[0]
 
-                if class_name not in ["BaseModel"]:  # Adjust the list if you have more classes
+                if class_name not in valid_classes:  # Adjust the list if you have more classes
                     print(class_name)
                     print("** class doesn't exist **")
                 else:
                     # Now you have the correct class name, proceed with creating the instance
-                    new_instance = BaseModel()
+                    new_instance = globals()[class_name]()
                     new_instance.save()
                     print(new_instance.id)
 
@@ -65,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 class_name = args_list[0]
 
-                if class_name not in ["BaseModel"]:
+                if class_name not in valid_classes:
                     print(class_name)
                     print("** class doesn't exist **")
                 else:
@@ -100,15 +107,17 @@ class HBNBCommand(cmd.Cmd):
             else:
                 class_name = args_list[0]
 
-                if class_name not in ["BaseModel"]:
+                if class_name not in valid_classes:
                     print("** class doesn't exist **")
                 else:
                     if len(args_list) < 2:
                         print("** instance id missing **")
                     else:
                         class_id = args_list[1]
+                        instance = storage.all()
+                        key = f"{class_name}.{class_id}"
 
-                        if class_id not in storage.all():
+                        if key not in instance:
                             print("** no instance found **")
                         else:
                             # Call your Storage function if available
@@ -117,9 +126,9 @@ class HBNBCommand(cmd.Cmd):
                             # create a key to link class_name and class_id
                             key = f"{class_name}.{class_id}"
                             # Try to find the instance in the storage
-                            instance = storage.all().get(key, None)
+                            instance = storage.all()
 
-                            if instance is None:
+                            if instance[key] is None:
                                 print("** no instance found **")
                             else:
                                 del storage.all()[key]
@@ -141,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 class_name = args_list[0]
 
-                if class_name not in ["BaseModel"]:
+                if class_name not in valid_classes:
                     print("** class doesn't exist **")
                 else:
                     storage = FileStorage()
@@ -165,7 +174,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 class_name = args_list[0]
 
-                if class_name not in ["BaseModel"]:
+                if class_name not in valid_classes:
                     print("** class doesn't exist **")
                 else:
                     if len(args_list) < 2:

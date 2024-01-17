@@ -17,7 +17,7 @@ class FileStorage:
         """
         returns the dictionary __objects
         """
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """
@@ -26,38 +26,42 @@ class FileStorage:
         """
 
         key = f"{obj.__class__.__name__}.{obj.id}"
-        self.__objects[key] = obj
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """
         serializes __objects to the JSON file (path: __file_path)
-        :return:
         """
         obj_dict = {}
 
-        for key, obj in self.__objects.items():
+        for key, obj in FileStorage.__objects.items():
             obj_dict[key] = obj.to_dict()
 
-        with open(self.__file_path, mode="w", encoding="utf-8") as f:
+        with open(FileStorage.__file_path, "a") as f:
             json.dump(obj_dict, f)
+            # f.write(json.dumps(obj_dict))
+            f.write('\n')
 
     def reload(self):
         """
-        Deserializes __objects json.file to dict
-        :return:
+        Deserializes __objects json. file to dict
         """
-
-        if os.path.isfile(self.__file_path):
-            with open(self.__file_path, mode="r", encoding="utf-8") as f:
-                dic = json.load(f)
-                for key, value in dic.items():
-                    my_class = value.get("__class__", None)
-                    if my_class:
-                        try:
-                            new_obj = eval(my_class)(**value)
-                            self.__objects.update({key: new_obj})
-                        except NameError:
-                            # Handle the case when the class is not defined
-                            pass
-        else:
-            pass  # Ignore if the file doesn't exist
+        try:
+            if os.path.isfile(FileStorage.__file_path):
+                with open(FileStorage.__file_path, "r") as f:
+                    for line in f:
+                        obj_dict = json.loads(line)
+                        my_class = obj_dict.get("__class__", None)
+                        if my_class:
+                            try:
+                                new_obj = eval(my_class)(**obj_dict)
+                                key = f"{my_class}.{new_obj.id}"
+                                FileStorage.__objects[key] = new_obj
+                                return FileStorage.__objects
+                            except NameError:
+                                # Handle the case when the class is not defined
+                                pass
+            else:
+                pass  # Ignore if the file doesn't exist
+        except FileNotFoundError:
+            pass

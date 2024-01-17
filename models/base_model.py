@@ -14,7 +14,7 @@ class BaseModel:
         :param args: Unique id for each instance
         :param kwargs: Time it was created
         """
-        if kwargs is not None:
+        if kwargs:
             for key, value in kwargs.items():
                 if key == "__class__":
                     continue
@@ -22,10 +22,9 @@ class BaseModel:
                     setattr(self, key, datetime.fromisoformat(str(value)))
                 setattr(self, key, value)
 
-        if not kwargs:
+        else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
-            self.updated_at = datetime.now()
             storage.new(self)
 
     def save(self):
