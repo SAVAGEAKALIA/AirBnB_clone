@@ -26,3 +26,21 @@ button {
 button:hover {
     opacity: 0.9;
 }
+
+.filters section {
+    position: relative;
+    height: 100%;
+    width: 25%;
+  }
+  
+  .filters section:first-child {
+    border-right: 1px solid #DDDDDD; /* Border for first section */
+  }
+
+h3 {
+    font-weight: 600;
+}
+h4 {
+    font-weight: 400;
+    font-size: 14px;
+}
