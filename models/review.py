@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""" Review Class that inherits from BaseModel"""
+"""" Review Class that inherits from BaseModel """
 from models.base_model import BaseModel
 
 
