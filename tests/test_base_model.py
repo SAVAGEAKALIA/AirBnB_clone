@@ -1,8 +1,12 @@
 #!/usr/bin/python3
-import unittest
-from unittest.mock import patch
-from datetime import datetime
-from models import storage
+# import unittest
+# from unittest.mock import patch
+# from datetime import datetime
+# from models import storage
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from models.base_model import BaseModel
 
 my_model = BaseModel()

@@ -12,6 +12,7 @@ from models.review import Review
 
 valid_classes = ["BaseModel", "State", "City", "Amenity", "Place", "Review", "User"]
 
+
 class HBNBCommand(cmd.Cmd):
     """AirBnb Command line interpreter"""
     prompt = '(hbnb) '

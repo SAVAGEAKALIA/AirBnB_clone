@@ -20,11 +20,13 @@ class BaseModel:
                     continue
                 elif key in ["created_at", "updated_at"]:
                     setattr(self, key, datetime.fromisoformat(str(value)))
-                setattr(self, key, value)
+                else:
+                    setattr(self, key, value)
 
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
+            self.updated_at = self.created_at
             storage.new(self)
 
     def save(self):
@@ -53,4 +55,4 @@ class BaseModel:
         str implementation for Class
         :return: [<class name>] (<self.id>) <self.__dict__>
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, str(self.__dict__))
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
