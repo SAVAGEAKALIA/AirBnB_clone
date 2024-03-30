@@ -11,5 +11,5 @@ class Review(BaseModel):
     text = ""
 
     def __int__(self):
-        """Constructor for Review class"""
+        """ Constructor for Review class"""
         super().__init__(*args, **kwargs)
