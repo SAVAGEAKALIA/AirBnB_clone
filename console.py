@@ -47,11 +47,13 @@ class HBNBCommand(cmd.Cmd):
             else:
                 class_name = args_list[0]
 
-                if class_name not in valid_classes:  # Adjust the list if you have more classes
+                if class_name not in valid_classes:
+                    # Adjust the list if you have more classes
                     print(class_name)
                     print("** class doesn't exist **")
                 else:
-                    # Now you have the correct class name, proceed with creating the instance
+                    # Now you have the correct class name
+                    # proceed with creating the instance
                     new_instance = globals()[class_name]()
                     new_instance.save()
                     print(new_instance.id)
@@ -155,9 +157,13 @@ class HBNBCommand(cmd.Cmd):
                     print("** class doesn't exist **")
                 else:
                     storage = FileStorage()
-                    instances = storage.all()  # Assuming storage is an instance of your storage class
+                    instances = storage.all()
+                    # Assuming storage is an instance of your storage class
                     for key, instance in instances.items():
-                        print("[[{}] ({}) {}".format(instance.__class__.__name__, instance.id, str(instance.__dict__)))
+                        ins_nm = instance.__class__.__name__
+                        ins_id = instance.id
+                        ins_dic = str(instance.__dict__)
+                        print("[[{}] ({}) {}".format(ins_nm, ins_id, ins_dic))
 
     def do_update(self, args):
         """
