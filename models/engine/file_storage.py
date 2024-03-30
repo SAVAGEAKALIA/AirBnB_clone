@@ -40,32 +40,29 @@ class FileStorage:
         with open(FileStorage.__file_path, "w", encoding="UTF-8") as f:
             json.dump(obj_dict, f)
 
-    def reload(self):
+    def reload(Filestorage):
         """
         Deserializes __objects json. file to dict
         """
-        try:
-            if os.path.isfile(self.__file_path):
-                with open(self.__file_path, "r", encoding="UTF-8") as f:
-                    # json.loads converts to python object
-                    obj_dict = json.load(f)
+        if os.path.isfile(Filestorage.__file_path):
+            with open(Filestorage.__file_path, "r", encoding="UTF-8") as f:
+                # json.loads converts to python object
+                obj_dict = json.load(f)
 
-                for key, dictionary in obj_dict.items():  # Corrected `items()`
-                    # Check for class name within any value
+            for key, dictionary in obj_dict.items():  # Corrected `items()`
+                # Check for class name within any value
 
-                    class_name = dictionary['__class__']
-                    obj_id = dictionary["id"]
-                    key = "{}.{}".format(class_name, obj_id)
-                    new_obj = self.classes()[class_name](**dictionary)
+                class_name = dictionary['__class__']
+                obj_id = dictionary["id"]
+                key = "{}.{}".format(class_name, obj_id)
+                new_obj = Filestorage.classes()[class_name](**dictionary)
 
-                    self.__objects[key] = new_obj
+                Filestorage.__objects[key] = new_obj
 
             else:
                 # Handle objects without a valid class name
                 # print("Warning: No File Path Detected")
                 pass
-        except FileNotFoundError:
-            pass
 
     def classes(self):
         """ This code is written to handle the importation of classes"""
@@ -77,7 +74,8 @@ class FileStorage:
         from models.state import State
         from models.user import User
 
-        return {"BaseModel": BaseModel,
+        return {
+                "BaseModel": BaseModel,
                 "User": User,
                 "Amenity": Amenity,
                 "City": City,

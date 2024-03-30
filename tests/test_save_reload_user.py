@@ -1,11 +1,10 @@
 #!/usr/bin/python3
-import sys
 import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import sys
 from models import storage
-from models.base_model import BaseModel
 from models.user import User
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 all_objs = storage.all()
 print("-- Reloaded objects --")
