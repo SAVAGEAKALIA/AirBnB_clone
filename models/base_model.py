@@ -55,4 +55,7 @@ class BaseModel:
         str implementation for Class
         :return: [<class name>] (<self.id>) <self.__dict__>
         """
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        cls = self.__class__.__name__
+        cls_id = self.id
+        cls_dic = self.__dict__
+        return "[{}] ({}) {}".format(cls, cls_id, cls_dic)
