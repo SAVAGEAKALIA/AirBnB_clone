@@ -13,6 +13,16 @@ from models.review import Review
 valid_classes = ["BaseModel", "State", "City", "Amenity", "Place", "Review", "User"]
 
 
+def count_instances(class_name, storage = FileStorage()):
+    """Counts the number of instances of a given class in the storage."""
+    instances = storage.all()
+    count = 0
+    for instance in instances.values():
+        if instance.__class__.__name__ == class_name:
+            count += 1
+    return count
+
+
 class HBNBCommand(cmd.Cmd):
     """AirBnb Command line interpreter"""
     prompt = '(hbnb) '
@@ -164,6 +174,45 @@ class HBNBCommand(cmd.Cmd):
                         ins_id = instance.id
                         ins_dic = str(instance.__dict__)
                         print("[[{}] ({}) {}".format(ins_nm, ins_id, ins_dic))
+
+    @staticmethod
+    def count(self):
+        """
+        Counts the number of instances of the User class
+        """
+        storage = FileStorage()
+        instance_all = storage.all()
+
+        count = 0
+        for key, obj in instance_all.items():
+            if isinstance(obj, User):
+                count += 1
+        return count
+
+    def do_count(self, args):
+        """Calls the classmethod count with the current class or handles User.count() syntax."""
+        if not args:  # No arguments, treat as User.count() syntax
+            try:
+                # Extract class name from self.__class__.__name__ (assuming HBNBCommand inherits from it)
+                class_name = self.__class__.__name__.split(".")[1]
+                print(HBNBCommand.count(self.__class__, class_name))
+            except (AttributeError, IndexError):
+                print("** Unknown syntax or class name not found **")
+        else:
+            # Existing functionality for do_count with arguments
+            args_list = args.split()
+            if not args_list:
+                print("** class name missing **")
+            else:
+                class_name = args_list[0]
+                storage = FileStorage()
+                instance_all = storage.all()
+                count = 0
+                for dict in instance_all.values():
+                    inst_cls = dict.__class__.__name__
+                    if inst_cls == class_name:
+                        count += 1
+                print(count)
 
     def do_update(self, args):
         """
