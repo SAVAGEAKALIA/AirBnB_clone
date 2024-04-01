@@ -4,8 +4,8 @@
     width: 100%;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
-    display: flex;
-    justify-content: flex-end;
+    displa
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -17,47 +17,74 @@ button {
     width: 20%;
     border: none;
     border-radius: 4px;
-    margin-left: 30px;
+    margin-right: 30px;
     cursor: pointer; 
     opacity: 1;
     transition: opacity 0.3s;
+    float: right;
 }
 
 button:hover {
     opacity: 0.9;
 }
 
-.filters section {
-    height: 100%;
-    width: 25%;
-  }
-  
-  .filters section:first-child {
-    border-right: 1px solid #DDDDDD; /* Border for first section */
-  }
+section.filters .location {
+  height: 100%;
+  width: 25%;
+  justify-self: center;
+  padding-left: 3.5%;
+  float: left;
+  display: block;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-h3 {
+section.filters .amenities {
+  height: 100%;
+  width: 25%;
+  justify-self: center;
+  padding-left: 3.5%;
+  float: left;
+  display: block;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.location:first-child {
+  border-right: 1px solid #DDDDDD; /* Border for first section */
+}
+
+
+
+
+section.filters h3 {
     font-weight: 600;
 }
-h4 {
+
+section.filters h4 {
     font-weight: 400;
     font-size: 14px;
-}
+    }
+    
 .popover {
     display: none; /* Hide by default */
-    position: absolute;
     background-color: #FAFAFA;
-    width: 100%;
+    width: auto;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
     z-index: 1; /* Ensure it appears above other elements */
     list-style: none; /* Remove default list styling */
+    position: relative;
   }
   
-  .filters section:hover .popover {
-    display: block; /* Show on hover */
+  .amenities:hover .popover {
+    display: block;
   }
   
+  .location:hover .popover {
+    display: block;
+  }
+
   .popover li {
     padding: 10px;
     cursor: pointer; /* Indicate interactivity */
